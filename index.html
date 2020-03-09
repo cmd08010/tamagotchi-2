@@ -18,10 +18,142 @@
     <div id="root"></div>
     <script type="text/babel">
       const { useState, useEffect } = React
+      const { Route, Switch, Link, Router } = ReactRouterDOM
 
       const App = () => {
-        return <div>New HTML</div>
+        const [chosenPet, setChosenPet] = useState([])
+        const [pets, setPets] = useState([])
+        const [users, setUsers] = useState([])
+        const [nameClass, setNameClass] = useState("pets")
+        const [params, setParams] = useState("")
+
+        useEffect(() => {
+          console.log("use effect running")
+          Promise.all([axios.get("/api/pets"), axios.get("/api/users")])
+            .then(responses => responses.map(response => response.data))
+            .then(results => {
+              setPets(results[0])
+              setUsers(results[1])
+            })
+        }, [])
+
+        const feedPet = (ev, id) => {
+          const feed = ev.target.innerText
+          axios
+            .put(`/api/pets/${feed}`, { id })
+            .then(response => setPets([response.data]))
+        }
+
+        const playWithPet = (ev, id) => {
+          console.log(id)
+          const play = ev.target.innerText
+          axios
+            .put(`/api/pets/${play}`, { id })
+            .then(response => setPets([response.data]))
+        }
+
+        const giveLove = (ev, pet) => {
+          const id = pet.id
+          const love = ev.target.innerText
+          axios
+            .put(`/api/pets/${love}`, { id })
+            .then(response => setPets([response.data]))
+            .then(setHeartEyes(pet))
+        }
+
+        const setHeartEyes = pet => {
+          if (pet.love_level >= "7") {
+            setNameClass("hearts")
+          } else {
+            setNameClass("pets")
+          }
+        }
+
+        const PetSelected = () => {
+          return (
+            <div>
+              <h1>Pet</h1>
+              {chosenPet.map(pet => {
+                return (
+                  <div key={pet.id} className={nameClass}>
+                    <h2> {pet.name}</h2>
+                    <img src={pet.image} />
+                    <br />
+                    Hunger-level: {pet.hunger_level}
+                    <br />
+                    Tired: {pet.tired_level}
+                    <br />
+                    love: {pet.love_level}
+                    <div className="pet">
+                      <button
+                        onClick={ev => {
+                          feedPet(ev, pet.id)
+                        }}
+                      >
+                        Feed
+                      </button>
+                      <button
+                        onClick={ev => {
+                          playWithPet(ev, pet.id)
+                        }}
+                      >
+                        Play
+                      </button>
+                      <button
+                        onClick={ev => {
+                          giveLove(ev, pet)
+                        }}
+                      >
+                        Love
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setParams("")
+                      }}
+                    >
+                      {" "}
+                      Switch pets?
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        }
+
+        const PetNotSelected = () => {
+          return (
+            <div>
+              <h1>Pet</h1>
+              Select a Pet!
+              {pets.map(pet => {
+                return (
+                  <div key={pet.id} className="pets">
+                    <img
+                      src={pet.image}
+                      onClick={ev => {
+                        setChosenPet([pet])
+                        console.log(ev.target)
+                        setParams("selected")
+                      }}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          )
+        }
+
+        return (
+          <div>
+            {params === "" && <PetNotSelected />}
+
+            {params === "selected" && <PetSelected />}
+          </div>
+        )
       }
+
       const root = document.querySelector("#root")
       ReactDOM.render(<App />, root)
     </script>

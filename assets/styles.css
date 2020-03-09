@@ -43,6 +43,16 @@ h1 {
   text-align: center;
 }
 
+.pet {
+  display: flex;
+  flex-direction: row;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 section {
   display: flex;
   border: solid 2px teal;
