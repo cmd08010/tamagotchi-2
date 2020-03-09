@@ -36,7 +36,7 @@
               setPets(results[0])
               setUsers(results[1])
             })
-        }, [])
+        }, [params])
 
         const feedPet = (ev, pet) => {
           const id = pet.id
@@ -78,6 +78,15 @@
           }
         }
 
+        const reduceLoveLevel = (ev, pet) => {
+          const id = pet.id
+          const switchButton = ev.target.innerText
+
+          axios.put(`/api/pets/${switchButton}`, { id }).then(response => {
+            setChosenPet([response.data])
+          })
+        }
+
         const PetSelected = () => {
           return (
             <div>
@@ -86,49 +95,57 @@
                 return (
                   <div key={pet.id}>
                     <h2> {pet.name}</h2>
+                    <h3> Remember! switching pets will decrease their love!</h3>
                     {pet.hunger_level > 5
                       ? alert(`${pet.name} is hungry. Time to feed her`)
                       : true}
-                    {<img src={petImage} />}
-                    <div id="heart" class="button"></div>
-                    <br />
-                    Hunger-level: {pet.hunger_level}
-                    <br />
-                    Tired: {pet.tired_level}
-                    <br />
-                    love: {pet.love_level}
-                    <div className="buttons">
-                      <button
-                        onClick={ev => {
-                          feedPet(ev, pet)
-                        }}
-                      >
-                        Feed
-                      </button>
-                      <button
-                        onClick={ev => {
-                          playWithPet(ev, pet)
-                        }}
-                      >
-                        Play
-                      </button>
+                    {pet.love_level < 2
+                      ? alert(
+                          `${pet.name} is sad. Feed or play with her to increase love`
+                        )
+                      : true}
+                    <div className="pet">
+                      {<img src={petImage} />}
+                      <br />
+                      Hunger-level: {pet.hunger_level}
+                      <br />
+                      Tired: {pet.tired_level}
+                      <br />
+                      love: {pet.love_level}
+                      <div className="buttons">
+                        <button
+                          onClick={ev => {
+                            feedPet(ev, pet)
+                          }}
+                        >
+                          Feed
+                        </button>
+                        <button
+                          onClick={ev => {
+                            playWithPet(ev, pet)
+                          }}
+                        >
+                          Play
+                        </button>
 
+                        <button
+                          onClick={ev => {
+                            takeANap(ev, pet)
+                          }}
+                        >
+                          Nap
+                        </button>
+                      </div>
                       <button
+                        className="glow-on-hover"
                         onClick={ev => {
-                          takeANap(ev, pet)
+                          setParams("")
+                          reduceLoveLevel(ev, pet)
                         }}
                       >
-                        Nap
+                        Switch pets?
                       </button>
                     </div>
-                    <button
-                      className="glow-on-hover"
-                      onClick={() => {
-                        setParams("")
-                      }}
-                    >
-                      Switch pets?
-                    </button>
                   </div>
                 )
               })}
@@ -146,7 +163,7 @@
               <div className="pets">
                 {pets.map(pet => {
                   return (
-                    <div className="pet" key={pet.id}>
+                    <div key={pet.id}>
                       <img
                         src={pet.image}
                         onClick={ev => {
@@ -155,6 +172,15 @@
                           setPetImage(pet.image)
                         }}
                       />
+                      <div className="stats">
+                        <br />
+                        Stats:
+                        <br />
+                        love: {pet.love_level}
+                        <br />
+                        hunger: {pet.hunger_level}
+                        <br /> tired: {pet.tired_level}
+                      </div>
                     </div>
                   )
                 })}

@@ -36,7 +36,6 @@ app.delete("/api/", (req, res, next) => {
   console.log("wow")
 })
 app.put("/api/pets/:action", (req, res, next) => {
-  console.log(req.params.action)
   if (req.params.action === "Feed") {
     db.decreaseHungerLevel(req.body.id).then(hungerResponse => {
       db.setLoveLevel(req.body.id).then(response => {
@@ -52,9 +51,10 @@ app.put("/api/pets/:action", (req, res, next) => {
 
   if (req.params.action === "Play") {
     db.increaseTiredLevel(req.body.id).then(playResponse => {
-      db.increaseHungerLevel(req.body.id).then(response => {
-        console.log(response)
-        res.send(response)
+      db.increaseHungerLevel(req.body.id).then(hunResponse => {
+        db.setLoveLevel(req.body.id).then(response => {
+          res.send(response)
+        })
       })
     })
   }
@@ -65,6 +65,11 @@ app.put("/api/pets/:action", (req, res, next) => {
 
   if (req.params.action === "Love") {
     db.setLoveLevel(req.body.id).then(response => {
+      res.send(response)
+    })
+  }
+  if (req.params.action === "Switch pets") {
+    db.decreaseLoveLevel(req.body.id).then(response => {
       res.send(response)
     })
   }

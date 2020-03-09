@@ -52,7 +52,8 @@ h1 {
 img {
   max-width: 100%;
   height: auto;
-  border-radius: 80%;
+  border-radius: 50%;
+  object-fit: none;
 }
 
 section {
@@ -67,6 +68,12 @@ section {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.hearts {
+  display: flex;
+  flex-direction: column;
+  background-image: "https://cmkt-image-prd.freetls.fastly.net/0.1.0/ps/5675775/910/910/m1/fpnw/wm1/mlttz3pwrghi7onyt1ij9xo7vjowaazaftbrrgconnslhkgdq2jknyzpibhkhsdr-.jpg?1547056410&s=89d113c874bc37e6e533f6c990f5d5bd";
 }
 
 .banner {
@@ -150,4 +157,10 @@ section {
   100% {
     background-position: 0 0;
   }
+}
+
+.stats {
+  font: outline;
+  font-size: 1.5rem;
+  font-style: initial;
 }
