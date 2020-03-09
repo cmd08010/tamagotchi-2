@@ -21,11 +21,16 @@ const sync = async () => {
     love_level INT,
     CONSTRAINT love_level CHECK (hunger_level BETWEEN 0 AND 10),
     image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
+    tired_image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
+    play_image VARCHAR,
+    love_image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
     date_create TIMESTAMP default CURRENT_TIMESTAMP
   );
-  INSERT INTO pet(name, hunger_level, tired_level, love_level) VALUES ('Woodley', '5','5','1');
+  INSERT INTO pet(name, hunger_level, tired_level,  love_level, image,  play_image, tired_image, love_image) VALUES ('Woodley', '5','5','1', 'https://i.imgur.com/Y0q6OiD.jpg?1','https://i.imgur.com/FWn09AX.jpg?1','https://i.imgur.com/ctvAATo.jpg?1','https://i.imgur.com/C4Cl5KC.png?1');
 
-  INSERT INTO pet(name, hunger_level, tired_level, love_level, image) VALUES ('Bridges', '5','5','1', 'https://i.imgur.com/EzMJmh4.jpg?1');
+
+
+  INSERT INTO pet(name, hunger_level, tired_level,  love_level, image,  play_image, tired_image, love_image) VALUES ('Bridges', '5','5','1', 'https://i.imgur.com/EzMJmh4.jpg?1', 'https://i.imgur.com/nkHi2rQ.jpg?1','https://i.imgur.com/ZgdbLjk.jpg?1','https://i.imgur.com/KOdbcWJ.png?1');
 
 
   `
@@ -78,6 +83,11 @@ const setName = async (id, name) => {
   return response.rows[0]
 }
 
+const setImage = async (id, image) => {
+  const SQL = `UPDATE pet SET image = $2
+WHERE id = $}`
+}
+
 module.exports = {
   sync,
   getPet,
@@ -85,5 +95,6 @@ module.exports = {
   setLoveLevel,
   increaseTiredLevel,
   decreaseTiredLevel,
-  setName
+  setName,
+  setImage
 }

@@ -43,6 +43,11 @@ app.put("/api/pets/:action", (req, res, next) => {
       })
     })
   }
+  if (req.params.action === "Full") {
+    db.setLoveLevel(req.body.id).then(response => {
+      res.send(response)
+    })
+  }
 
   if (req.params.action === "Play") {
     db.increaseTiredLevel(req.body.id).then(playResponse => {

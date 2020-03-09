@@ -26,6 +26,7 @@
         const [users, setUsers] = useState([])
         const [nameClass, setNameClass] = useState("pets")
         const [params, setParams] = useState("")
+        const [petImage, setPetImage] = useState("")
 
         useEffect(() => {
           console.log("use effect running")
@@ -45,8 +46,8 @@
               .put(`/api/pets/${feed}`, { id })
               .then(response => setChosenPet([response.data]))
           } else {
-            console.log(pet.hunger_level)
             alert(`${pet.name} is full! You can't feed her anymore`)
+            setPetImage(pet.love_image)
           }
         }
 
@@ -58,25 +59,8 @@
               .put(`/api/pets/${play}`, { id })
               .then(response => setChosenPet([response.data]))
           } else {
-            console.log(pet.hunger_level)
             alert(`${pet.name} is too tired! Have her take a nap!`)
-          }
-        }
-
-        const giveLove = (ev, pet) => {
-          const id = pet.id
-          const love = ev.target.innerText
-          axios
-            .put(`/api/pets/${love}`, { id })
-            .then(response => setChosenPet([response.data]))
-            .then(setHeartEyes(pet))
-        }
-
-        const setHeartEyes = pet => {
-          if (pet.love_level >= "7") {
-            setNameClass("hearts")
-          } else {
-            setNameClass("pets")
+            setPetImage(pet.tired_image)
           }
         }
 
@@ -88,8 +72,8 @@
               .put(`/api/pets/${nap}`, { id })
               .then(response => setChosenPet([response.data]))
           } else {
-            console.log(pet.hunger_level)
             alert(`${pet.name} is Wide Awake! Time to play!`)
+            setPetImage(pet.play_image)
           }
         }
 
@@ -101,7 +85,7 @@
                 return (
                   <div key={pet.id} className={nameClass}>
                     <h2> {pet.name}</h2>
-                    <img src={pet.image} />
+                    {<img src={petImage} />}
                     <br />
                     Hunger-level: {pet.hunger_level}
                     <br />
@@ -158,8 +142,8 @@
                       src={pet.image}
                       onClick={ev => {
                         setChosenPet([pet])
-
                         setParams("selected")
+                        setPetImage(pet.image)
                       }}
                     />
                   </div>
