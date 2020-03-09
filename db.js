@@ -15,8 +15,11 @@ const sync = async () => {
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR NOT NULL,
     hunger_level INT,
+    CONSTRAINT hunger_level CHECK (hunger_level BETWEEN 0 AND 10),
     tired_level INT,
+    CONSTRAINT tired_level CHECK (hunger_level BETWEEN 0 AND 10),
     love_level INT,
+    CONSTRAINT love_level CHECK (hunger_level BETWEEN 0 AND 10),
     image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
     date_create TIMESTAMP default CURRENT_TIMESTAMP
   );
@@ -44,8 +47,15 @@ const setLoveLevel = async id => {
   return response.rows[0]
 }
 
-const setTiredLevel = async id => {
+const increaseTiredLevel = async id => {
   const SQL = ` UPDATE pet SET tired_level = tired_level + 1 where id = $1
+  returning *`
+  const response = await client.query(SQL, [id])
+
+  return response.rows[0]
+}
+const decreaseTiredLevel = async id => {
+  const SQL = ` UPDATE pet SET tired_level = tired_level - 1 where id = $1
   returning *`
   const response = await client.query(SQL, [id])
 
@@ -57,14 +67,14 @@ const setHungerLevel = async id => {
   returning *
   `
   const response = await client.query(SQL, [id])
-  // console.log(response)
+
   return response.rows[0]
 }
 
 const setName = async (id, name) => {
   const SQL = `UPDATE pet SET name = $2 WHERE id= $1 returning *`
   const response = await client.query(SQL, [id, name])
-  // console.log(response)
+
   return response.rows[0]
 }
 
@@ -73,6 +83,7 @@ module.exports = {
   getPet,
   setHungerLevel,
   setLoveLevel,
-  setTiredLevel,
+  increaseTiredLevel,
+  decreaseTiredLevel,
   setName
 }

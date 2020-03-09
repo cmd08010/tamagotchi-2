@@ -37,19 +37,30 @@
             })
         }, [])
 
-        const feedPet = (ev, id) => {
+        const feedPet = (ev, pet) => {
+          const id = pet.id
           const feed = ev.target.innerText
-          axios
-            .put(`/api/pets/${feed}`, { id })
-            .then(response => setChosenPet([response.data]))
+          if (pet.hunger_level > 0) {
+            axios
+              .put(`/api/pets/${feed}`, { id })
+              .then(response => setChosenPet([response.data]))
+          } else {
+            console.log(pet.hunger_level)
+            alert(`${pet.name} is full! You can't feed her anymore`)
+          }
         }
 
-        const playWithPet = (ev, id) => {
-          console.log(id)
+        const playWithPet = (ev, pet) => {
+          const id = pet.id
           const play = ev.target.innerText
-          axios
-            .put(`/api/pets/${play}`, { id })
-            .then(response => setChosenPet([response.data]))
+          if (pet.tired_level < 9) {
+            axios
+              .put(`/api/pets/${play}`, { id })
+              .then(response => setChosenPet([response.data]))
+          } else {
+            console.log(pet.hunger_level)
+            alert(`${pet.name} is too tired! Have her take a nap!`)
+          }
         }
 
         const giveLove = (ev, pet) => {
@@ -66,6 +77,19 @@
             setNameClass("hearts")
           } else {
             setNameClass("pets")
+          }
+        }
+
+        const takeANap = (ev, pet) => {
+          const id = pet.id
+          const nap = ev.target.innerText
+          if (pet.tired_level > 0) {
+            axios
+              .put(`/api/pets/${nap}`, { id })
+              .then(response => setChosenPet([response.data]))
+          } else {
+            console.log(pet.hunger_level)
+            alert(`${pet.name} is Wide Awake! Time to play!`)
           }
         }
 
@@ -87,24 +111,25 @@
                     <div className="pet">
                       <button
                         onClick={ev => {
-                          feedPet(ev, pet.id)
+                          feedPet(ev, pet)
                         }}
                       >
                         Feed
                       </button>
                       <button
                         onClick={ev => {
-                          playWithPet(ev, pet.id)
+                          playWithPet(ev, pet)
                         }}
                       >
                         Play
                       </button>
+
                       <button
                         onClick={ev => {
-                          giveLove(ev, pet)
+                          takeANap(ev, pet)
                         }}
                       >
-                        Love
+                        Nap
                       </button>
                     </div>
                     <button
@@ -112,7 +137,6 @@
                         setParams("")
                       }}
                     >
-                      {" "}
                       Switch pets?
                     </button>
                   </div>
@@ -126,7 +150,7 @@
           return (
             <div>
               <h1>Pet</h1>
-              Select a Pet!
+              <h2>Select a pet by clicking a photo!</h2>
               {pets.map(pet => {
                 return (
                   <div key={pet.id} className="pets">
@@ -134,7 +158,7 @@
                       src={pet.image}
                       onClick={ev => {
                         setChosenPet([pet])
-                        console.log(ev.target)
+
                         setParams("selected")
                       }}
                     />
