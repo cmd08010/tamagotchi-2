@@ -15,18 +15,15 @@ const sync = async () => {
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR NOT NULL,
     hunger_level INT,
-    CONSTRAINT hunger_level CHECK (hunger_level BETWEEN 0 AND 10),
     tired_level INT,
-    CONSTRAINT tired_level CHECK (hunger_level BETWEEN 0 AND 10),
     love_level INT,
-    CONSTRAINT love_level CHECK (hunger_level BETWEEN 0 AND 10),
     image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
     tired_image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
     play_image VARCHAR,
     love_image VARCHAR DEFAULT 'https://i.imgur.com/Y0q6OiD.jpg?1',
     date_create TIMESTAMP default CURRENT_TIMESTAMP
   );
-  INSERT INTO pet(name, hunger_level, tired_level,  love_level, image,  play_image, tired_image, love_image) VALUES ('Woodley', '5','5','1', 'https://i.imgur.com/Y0q6OiD.jpg?1','https://i.imgur.com/FWn09AX.jpg?1','https://i.imgur.com/ctvAATo.jpg?1','https://i.imgur.com/C4Cl5KC.png?1');
+  INSERT INTO pet(name, hunger_level, tired_level,  love_level, image,  play_image, tired_image, love_image) VALUES ('Woodley', '5','5','1', 'https://i.imgur.com/Y0q6OiD.jpg?1','https://i.imgur.com/FWn09AX.jpg?1','https://i.imgur.com/ctvAATo.jpg?1','https://i.imgur.com/mvmIGCK.jpg?1');
 
 
 
@@ -67,12 +64,19 @@ const decreaseTiredLevel = async id => {
   return response.rows[0]
 }
 
-const setHungerLevel = async id => {
+const decreaseHungerLevel = async id => {
   const SQL = ` UPDATE pet SET hunger_level = hunger_level - 1 where id = $1
   returning *
   `
   const response = await client.query(SQL, [id])
 
+  return response.rows[0]
+}
+const increaseHungerLevel = async id => {
+  const SQL = ` UPDATE pet SET hunger_level = hunger_level + 1 where id = $1
+  returning *
+  `
+  const response = await client.query(SQL, [id])
   return response.rows[0]
 }
 
@@ -91,7 +95,8 @@ WHERE id = $}`
 module.exports = {
   sync,
   getPet,
-  setHungerLevel,
+  decreaseHungerLevel,
+  increaseHungerLevel,
   setLoveLevel,
   increaseTiredLevel,
   decreaseTiredLevel,

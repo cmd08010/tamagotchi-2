@@ -67,6 +67,7 @@
         const takeANap = (ev, pet) => {
           const id = pet.id
           const nap = ev.target.innerText
+          console.log(pet)
           if (pet.tired_level > 0) {
             axios
               .put(`/api/pets/${nap}`, { id })
