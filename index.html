@@ -44,7 +44,7 @@
         const [chosenPet, setChosenPet] = useState([])
         const [pets, setPets] = useState([])
         const [users, setUsers] = useState([])
-        const [nameclass, setNameclass] = useState("pets")
+        const [nameclass, setNameclass] = useState("")
         const [params, setParams] = useState("")
         const [petImage, setPetImage] = useState("")
 
@@ -154,7 +154,8 @@
                               Remember switching pets will cause their love to
                               decrease! If your pet's love is too low, you will
                               need to feed or play with them to increase their
-                              love!
+                              love! If your pet's love hits a certain level:
+                              look for a nice surprise!
                             </p>
                             <p>
                               Feeding: Feeding will increase your pet's love and
@@ -192,7 +193,13 @@
                           `${pet.name} is sad. Feed or play with her to increase love`
                         )
                       : true}
-                    <div className="pet">
+                    {pet.love_level > 10
+                      ? useEffect(() => {
+                          setNameclass("hearts")
+                        }, [])
+                      : true}
+
+                    <div className={`pet ${nameclass}`}>
                       {<img src={petImage} />}
                       <br />
                       Hunger-level: {pet.hunger_level}
