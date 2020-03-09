@@ -49,7 +49,7 @@
           const play = ev.target.innerText
           axios
             .put(`/api/pets/${play}`, { id })
-            .then(response => setChosenPets([response.data]))
+            .then(response => setChosenPet([response.data]))
         }
 
         const giveLove = (ev, pet) => {
