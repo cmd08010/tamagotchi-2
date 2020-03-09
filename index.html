@@ -1,7 +1,12 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="/styles.css" />
-
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script
@@ -13,6 +18,21 @@
       crossorigin
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.0/react-router-dom.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+      integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div id="root"></div>
@@ -24,7 +44,7 @@
         const [chosenPet, setChosenPet] = useState([])
         const [pets, setPets] = useState([])
         const [users, setUsers] = useState([])
-        const [nameClass, setNameClass] = useState("pets")
+        const [nameclass, setNameclass] = useState("pets")
         const [params, setParams] = useState("")
         const [petImage, setPetImage] = useState("")
 
@@ -93,9 +113,77 @@
               <h1>Pet</h1>
               {chosenPet.map(pet => {
                 return (
-                  <div key={pet.id}>
+                  <div key={pet.id} className="center-it">
                     <h2> {pet.name}</h2>
-                    <h3> Remember! switching pets will decrease their love!</h3>
+
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                    >
+                      Instructions
+                    </button>
+
+                    <div
+                      className="modal fade"
+                      id="exampleModal"
+                      tabIndex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">
+                              Instructions
+                            </h5>
+                            <button
+                              type="button"
+                              className="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div className="modal-body">
+                            <p>
+                              You can play with, feed, and nap your pet!
+                              Remember switching pets will cause their love to
+                              decrease! If your pet's love is too low, you will
+                              need to feed or play with them to increase their
+                              love!
+                            </p>
+                            <p>
+                              Feeding: Feeding will increase your pet's love and
+                              decrease their hunger-level. Once your pet's
+                              hunger level reachs 0 - you wont be able to feed
+                              them anymore
+                            </p>
+                            <p>
+                              Playing: Playing will increase their tired-level,
+                              hunger-level and also love level.
+                            </p>
+                            <p>
+                              Napping: Napping will decrease your pets tired
+                              level
+                            </p>
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              data-dismiss="modal"
+                            >
+                              Got it!
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {pet.hunger_level > 5
                       ? alert(`${pet.name} is hungry. Time to feed her`)
                       : true}

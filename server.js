@@ -75,6 +75,10 @@ app.put("/api/pets/:action", (req, res, next) => {
   }
 })
 
+app.get("/instructions", (req, res, next) => {
+  console.log("it worked")
+})
+
 db.sync()
   .then(() => {
     console.log("db synced")
