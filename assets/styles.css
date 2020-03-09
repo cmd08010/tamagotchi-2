@@ -19,8 +19,8 @@ nav {
 }
 
 button {
-  height: 2rem;
-  font-size: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
 }
 
 h2 {
@@ -37,7 +37,7 @@ li > * {
 }
 
 h1 {
-  background-color: teal;
+  background-color: #6495ed;
 
   color: linen;
   text-align: center;
