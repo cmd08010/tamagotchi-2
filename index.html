@@ -41,7 +41,7 @@
           const feed = ev.target.innerText
           axios
             .put(`/api/pets/${feed}`, { id })
-            .then(response => setPets([response.data]))
+            .then(response => setChosenPet([response.data]))
         }
 
         const playWithPet = (ev, id) => {
@@ -49,7 +49,7 @@
           const play = ev.target.innerText
           axios
             .put(`/api/pets/${play}`, { id })
-            .then(response => setPets([response.data]))
+            .then(response => setChosenPets([response.data]))
         }
 
         const giveLove = (ev, pet) => {
@@ -57,7 +57,7 @@
           const love = ev.target.innerText
           axios
             .put(`/api/pets/${love}`, { id })
-            .then(response => setPets([response.data]))
+            .then(response => setChosenPet([response.data]))
             .then(setHeartEyes(pet))
         }
 
